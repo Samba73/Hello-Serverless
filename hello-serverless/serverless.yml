@@ -1,0 +1,54 @@
+org: samba73
+console: true
+service: hello-serverless
+
+frameworkVersion: '3'
+plugins:
+  - serverless-offline
+
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: ap-southeast-1
+  stage: dev 
+  memorySize: 256
+  timeout: 5
+
+
+functions:
+  hello:
+    handler: handler.hello
+  add:
+    handler: handler.add
+    timeout: 10
+    events:
+      - http:
+          path: /math/add
+          method: POST
+          cors: true
+  add1:
+    handler: handler.add1
+    timeout: 10
+    events:
+      - http:
+          path: /math/add1
+          method: POST
+          integration: lambda
+          request:
+            template: 
+              application/json: >
+                #set($inputRoot = $input.path('$'))
+                {
+                  "num1": $inputRoot.input.operand1,
+                  "num2": $inputRoot.input.operand2
+                }
+          response:
+            headers:
+              Access-Control-Allow-Origin: "'*'"
+              Content-Type: "'application/json'"
+            template: >
+              #set($inputRoot = $input.path('$'))
+              {
+                "result": "$inputRoot"
+              }            
