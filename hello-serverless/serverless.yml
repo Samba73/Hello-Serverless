@@ -3,8 +3,6 @@ console: true
 service: hello-serverless
 
 frameworkVersion: '3'
-plugins:
-  - serverless-offline
 
 
 provider:
@@ -27,53 +25,3 @@ functions:
           path: /math/add
           method: POST
           cors: true
-  add1:
-    handler: handler.add1
-    timeout: 10
-    events:
-      - http:
-          path: /math/add1
-          method: POST
-          integration: lambda
-          request:
-            template: 
-              application/json: >
-                #set($inputRoot = $input.path('$'))
-                {
-                  "num1": $inputRoot.input.operand1,
-                  "num2": $inputRoot.input.operand2
-                }
-          response:
-            headers:
-              Access-Control-Allow-Origin: "'*'"
-              Content-Type: "'application/json'"
-            template: >
-              #set($inputRoot = $input.path('$'))
-              {
-                "result": "$inputRoot"
-              }            
-  multiply:
-    handler: handler.multiply
-    timeout: 10
-    events:
-      - http:
-          path: /math/multiply
-          method: POST
-          integration: lambda
-          request:
-            template: 
-              application/json: >
-                #set($inputRoot = $input.path('$'))
-                {
-                  "num1": $inputRoot.input.operand1,
-                  "num2": $inputRoot.input.operand2
-                }
-          response:
-            headers:
-              Access-Control-Allow-Origin: "'*'"
-              Content-Type: "'application/json'"
-            template: >
-              #set($inputRoot = $input.path('$'))
-              {
-                "result": "$inputRoot"
-              }      

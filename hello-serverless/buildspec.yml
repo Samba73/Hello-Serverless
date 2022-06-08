@@ -8,12 +8,13 @@ phases:
   pre_build:
     commands:
       - echo install dependencies
+      - npm install
 
   build:
     commands:
       - echo deployment started on `date`
       - echo deploying with serverless frameworkVersion
-      - sls deploy -v -f multiply -s $ENV_NAME
+      - sls deploy -v -s $ENV_NAME
   post_build:
     commands:
       - echo deployment completed on `date`
