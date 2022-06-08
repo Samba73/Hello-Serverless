@@ -7,7 +7,7 @@ phases:
 
   pre_build:
     commands:
-      - echo install dependencies (none)
+      - echo install dependencies
 
   build:
     commands:
